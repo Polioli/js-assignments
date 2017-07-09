@@ -1,0 +1,19 @@
+{
+  "name": "KS",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "babel src -d dist --presets es2015",
+    "build": "browserify dist/script.js -o dist/bundle.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "browserify": "^14.4.0"
+  }
+}

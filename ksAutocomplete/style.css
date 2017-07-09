@@ -1,0 +1,10 @@
+.p-rel{ position: relative; }
+.p-abs{ position: absolute; }
+.hidden{  display: none;}
+.em{ outline-color: red; /* outline: red 1px solid; */}
+.ul{ list-style-type: none; margin: 0; padding: 0; }
+.ul-ac{ z-index: 1000; top: 1.4em; left:0; background: #efefef; box-sizing: border-box; /*width: 100%; */max-height: 10.7em; overflow-y: auto;}
+.list-item{ padding: .2em; white-space: nowrap;}
+.list-item:hover{ background: #dedede; }
+.list-item.hover{ background: #cedece; }
+.ac{  display: inline-block; }

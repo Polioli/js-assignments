@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Olga Ivanchenko test task</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>Задача поле-автокомплит</h1>
+  <p>Реализовать поле, в котором при введении символов будет происходить поиск совпадений и вывод этих совпадений в виде кликабельного списка под этим полем.</p>
+  <div>
+    <label for="ac_1">Введите текст</label>
+    <div class="js-autocomplete p-rel ac" data-function-name="getCounties">
+      <input type="text" id="ac_1" class="js-text">
+      <ul class="js-list p-abs ul ul-ac hidden"></ul>
+    </div>
+  </div>
+  <h2>Пример с другими данными</h2>
+  <div>
+    <h3>Объект в коде</h3>
+    <label for="ac_1">Введите текст</label>
+    <div class="js-autocomplete p-rel ac" data-function-name="getTestObject">
+      <input type="text" id="ac_1" class="js-text">
+      <ul class="js-list p-abs ul ul-ac hidden"></ul>
+    </div>
+  </div>
+  <div>
+    <h3>Сайт soundcloud</h3>
+    <label for="ac_1">Введите текст</label>
+    <div class="js-autocomplete p-rel ac" data-function-name="getMusicData">
+      <input type="text" id="ac_1" class="js-text">
+      <ul class="js-list p-abs ul ul-ac hidden"></ul>
+    </div>
+  </div>
+  <script src="dist/bundle.js"></script>
+</body>
+</html>
