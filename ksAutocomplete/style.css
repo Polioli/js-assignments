@@ -7,4 +7,6 @@
 .list-item{ padding: .2em; white-space: nowrap;}
 .list-item:hover{ background: #dedede; }
 .list-item.hover{ background: #cedece; }
-.ac{  display: inline-block; }
+.ac{ display: inline-block; }
+.remove-chip { display: inline-block; background: #e9e9e9; padding: 2px 4px; border-radius: 50%; cursor: default; }
+.chip { display: inline-block; background: #eeeeee; padding: 4px; border-radius: 8px; margin-right: .5em; }

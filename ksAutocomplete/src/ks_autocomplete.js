@@ -104,6 +104,7 @@ class KSAutocomplete {
     document.activeElement.blur();
   };
   selectItem( node ) {
+    console.log( "selectItem of ksAutocomplete");
       if( node ) {
         let index = this.data.findIndex( ( item ) => {
           return item.name == node.dataset.id;
