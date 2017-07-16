@@ -22,7 +22,7 @@ class ToDoList {
     (form.js-add-item>input:text[name:"add-item"]+input:submit)+ul.todo-list.js-list
   */
   initMarkup() {
-    let template = `<form class="js-add-item"><input type="text" name="add-item" /><input type="submit" value="ok" /></form><ul class="todo-list js-list"></ul>`;
+    let template = `<button class="js-all">All items</button><form class="js-add-item"><input type="text" name="add-item" /><input type="submit" value="ok" /></form><ul class="todo-list js-list"></ul>`;
     this.parentNode.innerHTML = template;
     this.inputNode = this.parentNode.querySelector( ".js-add-item" );
     this.listNode = this.parentNode.querySelector( ".js-list" );
@@ -40,6 +40,7 @@ class ToDoList {
       createTask, removeTask, updateTask, completeTask
     */
     this.parentNode.addEventListener("createTask", ( ev ) => {
+      if( ev.detail.length == 0 ) return alert ( "Необходимо заполнить название задачи" );
       this.addItem( { name: ev.detail } );
     });
 
@@ -54,7 +55,14 @@ class ToDoList {
     });
 
     this.parentNode.addEventListener("updateTask", ( ev ) => {
-      console.log( "updateTask", ev.target , ev.detail );
+      let updatedItem = this.items[ findItem( this.items, ev.detail ) ].update();
+      // if( !updatedItem ) return;
+      // updatedItem.then( ( item ) => {
+      //   console.log( "--update finish", item );
+      //   // сохранение в БД
+      // }).catch( ( msg ) => {
+      //   console.log( "reject = ", msg );
+      // });
     });
 
     this.parentNode.addEventListener("toggleCompleteTask", ( ev ) => {
@@ -68,6 +76,7 @@ class ToDoList {
     this.inputNode.addEventListener("submit", ( ev ) => {
       ev.preventDefault();
       this.parentNode.dispatchEvent(new CustomEvent( "createTask", { detail: ev.target.elements[ "add-item" ].value } ));
+      this.inputNode.reset();
     });
 
     this.listNode.addEventListener("click", ( ev ) => {
@@ -78,11 +87,22 @@ class ToDoList {
       if( ev.target.classList.contains( "js-remove" ) ) {
         this.parentNode.dispatchEvent(new CustomEvent( "removeTask", { detail: ev.target.parentNode.dataset.id } ));
       }
-    });
 
+      if( ev.target.classList.contains( "js-update" ) ) {
+        this.parentNode.dispatchEvent(new CustomEvent( "updateTask", { detail: ev.target.parentNode.dataset.id } ));
+      }
+    });
+    /*
+      just for debug
+    */
+    this.parentNode.querySelector( ".js-all" ).addEventListener("click", ( ev ) => {
+      alert(this.items.map( ( item ) => {
+        return `${item.id} ${item.name} ${item.isComplete} \n`;
+      }).join( "" ));
+    });
   }
   addItem( item ) {
-    if( typeof item.id == "undefined" ) item.id = this.items.length;
+    if( typeof item.id == "undefined" ) item.id = new Date().getTime();
     // QUESTION: я бы даже для this.items использовала не массив, а объект
     // это упростило бы поиск и обращение к нужному item
     this.items.push( new ToDoListItem( this, item ) );
