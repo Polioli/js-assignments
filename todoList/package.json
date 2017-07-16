@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "prepare": "babel src -d dist --presets es2015",
-    "build": "browserify dist/main.js -o dist/bundle.js"
+    "build": "browserify dist/main.js -o bundle.js"
   },
   "keywords": [],
   "author": "",
