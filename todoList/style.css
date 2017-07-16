@@ -1,0 +1,4 @@
+.item-complete .text { text-decoration: line-through; }
+.todo-list { padding-left: 0; margin-left: 0; }
+.todo-item:hover { background: #eeeeee; }
+.remove-btn  { cursor: default; }
