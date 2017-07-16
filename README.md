@@ -1,5 +1,5 @@
 # js-assignments
 
 ## ksAutocomplete
-[Demo](http://polioli.github.io/js-assignments/)
+[Demo](https://polioli.github.io/js-assignments/)
 
