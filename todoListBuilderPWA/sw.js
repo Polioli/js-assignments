@@ -1,6 +1,6 @@
 let addError = ( message, data ) => {
   self.clients.matchAll().then( (all ) => {
-    return all.map( ( client ) client.postMessage( message + data ) );
+    return all.map( ( client ) => client.postMessage( message + data ) );
   });
   console.log( message, data );
 };
