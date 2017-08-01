@@ -1,14 +1,14 @@
 {
   "name": "Lazy ToDo list",
   "short_anme": "TODO",
-  "start_url": "/index.html",
+  "start_url": "/js-assignments/todoListBuilderPWA/index.html",
   "background_color": "#3e00ee",
   "theme_color": "#2f3ba2",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "landscape",
   "icons": [{
-    "src": "/icons/icon-128.png",
-    "sizes": "128x128",
+    "src": "/js-assignments/todoListBuilderPWA/img/mstile-144x144.png",
+    "sizes": "144x144",
     "type": "image/png"
   }
   ]
