@@ -1,10 +1,10 @@
 let cacheName = "todoPWA";
 let filesToCache = [
-  "/",
-  "/index.html",
-  "/dist/bundle.js",
-  "/fonts.css",
-  "/style.css",
+  "./",
+  "./index.html",
+  "./dist/bundle.js",
+  "./fonts.css",
+  "./style.css",
   "https://fonts.gstatic.com/s/roboto/v16/d-6IYplOFocCacKzxwXSOJBw1xU1rKptJj_0jans920.woff2",
   "https://fonts.gstatic.com/s/roboto/v16/isZ-wbCXNKAbnjo6_TwHToX0hVgzZQUfRDuZrPvH3D8.woff2"
 ];
