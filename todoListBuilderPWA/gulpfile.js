@@ -18,7 +18,7 @@ gulp.task( "styles", () => {
 gulp.task( "javascript", () => {
   return browserify( "./src/main.js" ,{ debug: true } ).transform( babelify,{ presets: ["es2015"] } )
   .bundle()
-  .pipe(fs.createWriteStream("./dist/bundle.js"));
+  .pipe(fs.createWriteStream("./bundle.js"));
 });
 
 gulp.task( "task-start", () => {
