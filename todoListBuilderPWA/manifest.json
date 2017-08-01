@@ -1,0 +1,15 @@
+{
+  "name": "Lazy ToDo list",
+  "short_anme": "TODO",
+  "start_url": "/index.html",
+  "background_color": "#3e00ee",
+  "theme_color": "#2f3ba2",
+  "display": "standalone",
+  "orientation": "portrait",
+  "icons": [{
+    "src": "/icons/icon-128.png",
+    "sizes": "128x128",
+    "type": "image/png"
+  }
+  ]
+}
