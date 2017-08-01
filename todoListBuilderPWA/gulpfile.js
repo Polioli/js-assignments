@@ -21,7 +21,13 @@ gulp.task( "javascript", () => {
   .pipe(fs.createWriteStream("./bundle.js"));
 });
 
+// gulp.task( "js-sw", () => {
+//   return browserify( "./src/sw.js" ,{ debug: true } ).transform( babelify,{ presets: ["es2015"] } )
+//   .bundle()
+//   .pipe(fs.createWriteStream("./sw.js"));
+// });
+
 gulp.task( "task-start", () => {
-  gulp.watch( "./src/*.*", [ "styles" , "javascript"] );
+  gulp.watch( "./src/*.*", [ "styles" , "javascript" ] );
 });
 
