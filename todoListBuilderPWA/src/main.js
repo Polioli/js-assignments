@@ -15,4 +15,6 @@ if( "serviceWorker" in navigator ) {
   navigator.serviceWorker.addEventListener( "message", ( ev ) => {
     addError( "From SW: ", ev.data );
    });
+} else {
+  addError( "The browser doesn't support ServiceWorker" );
 }
