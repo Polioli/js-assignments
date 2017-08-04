@@ -1,7 +1,10 @@
-import ToDoList from "./todolist.js";
+import ToDoList from "./todolist";
 
 class ToDoBuilder {
-  constructor( selector ) {
+  parentNode: HTMLBodyElement;
+  addButtonNode: Element;
+  todosBoxNode: Element;
+  constructor( selector:any ) {
     this.parentNode = document.querySelector( selector );
     this.initialize();
   }
@@ -33,18 +36,18 @@ class ToDoBuilder {
     let todosData = this.getDataFromStorage();
 
     if( !!todosData && todosData.length ) {
-        todosData.forEach( ( listId ) => {
+        todosData.forEach( ( listId:any ) => {
         this.createTodoList( { id: listId } );
       });
     } else {
-      this.createTodoList();
+      this.createTodoList( null );
     }
   }
 
-  getDataFromStorage() {
-    let todosData = localStorage.getItem( "todoLists" );
+  getDataFromStorage(): Array<any> {
+    let todosData: Array<any>;
     try {
-      todosData = JSON.parse( todosData ) || [];
+      todosData = JSON.parse( localStorage.getItem( "todoLists" ) ) || [];
     } catch( e ) {
       alert( "An error occured while saving the list" );
       todosData = null;
@@ -52,29 +55,29 @@ class ToDoBuilder {
     return todosData;
   }
 
-  setDataToStorage( todosData ) {
+  setDataToStorage( todosData:any ) {
     if( todosData.length )
       localStorage.setItem( "todoLists", JSON.stringify( todosData ) );
     else
       localStorage.removeItem( "todoLists" );
   }
 
-  createTodoList( data ) {
+  createTodoList( data:any ) {
     new ToDoList( this.todosBoxNode, data );
   }
 
   addList() {
-    this.createTodoList();
+    this.createTodoList( null );
   }
 
-  saveListId( ev ) {
+  saveListId( ev:any ) {
     let todosData = this.getDataFromStorage() ;
     if( !todosData ) return;
     todosData.push( ev.detail );
     this.setDataToStorage( todosData );
   }
 
-  removeListId( ev ) {
+  removeListId( ev:any ) {
     // actions after removing a list
     let todosData = this.getDataFromStorage();
     let index = todosData.indexOf( ev.detail );
@@ -85,4 +88,4 @@ class ToDoBuilder {
   }
 }
 
-export { ToDoBuilder as default }
+export default ToDoBuilder

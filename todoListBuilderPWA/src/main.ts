@@ -1,7 +1,7 @@
-import ToDoBuilder from "./todobuilder.js";
-import addError from "./errors.js";
+import ToDoBuilder from "./todobuilder";
+import addError from "./errors";
 
-var todoBuilder = new ToDoBuilder( ".js-todo-builder" );
+var todoBuilder: ToDoBuilder = new ToDoBuilder( ".js-todo-builder" );
 
 if( "serviceWorker" in navigator ) {
   navigator.serviceWorker.register( "/todoListBuilderPWA/sw.js" ) // all domain is the scope todoListBuilderPWA
@@ -16,5 +16,5 @@ if( "serviceWorker" in navigator ) {
     addError( "From SW: ", ev.data );
    });
 } else {
-  addError( "The browser doesn't support ServiceWorker" );
+  addError( "The browser doesn't support ServiceWorker", "" );
 }

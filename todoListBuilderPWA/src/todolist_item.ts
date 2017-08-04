@@ -1,5 +1,12 @@
 class ToDoListItem {
-  constructor( parentNode, item ) {
+  parentNode: HTMLBodyElement;
+  node: HTMLLIElement;
+  inputNode: HTMLInputElement;
+  isComplete: boolean;
+  readOnly: boolean;
+  name: string;
+  id: string;
+  constructor( parentNode:any, item:any ) {
     this.isComplete = false;
     Object.assign( this, item );
     this.parentNode = parentNode;
@@ -8,7 +15,7 @@ class ToDoListItem {
     this.initEvents();
   }
 
-  initMarkup( item ) {
+  initMarkup( item:any ) {
     let itemNode = document.createElement( "li" );
     itemNode.classList.add( "todo-item" );
     let checkedStatus = "";
@@ -23,7 +30,7 @@ class ToDoListItem {
     itemNode.dataset.id = item.id;
     this.parentNode.appendChild( itemNode );
     this.node = itemNode;
-    this.inputNode = itemNode.querySelector( ".js-update" );
+    this.inputNode = <HTMLInputElement>itemNode.querySelector( ".js-update" );
   }
 
   initEvents() {
@@ -33,18 +40,18 @@ class ToDoListItem {
 
     this.inputNode.addEventListener("click", ( ev ) => {
       if( this.isComplete ) return; // alert( "Нельзя изменять название закрытой задачи" );
-      ev.currentTarget.readOnly = false;
+      this.readOnly = false;
     });
 
     this.inputNode.addEventListener("change", this. updateEvent.bind( this ));
-    this.inputNode.addEventListener("keydown", ( ev ) => {
+    this.inputNode.addEventListener("keydown", ( ev:any ) => {
       if( ev.keyCode == 27 ) {
         ev.target.value = this.name;
         this.inputNode.blur();
       }
     });
-    this.inputNode.addEventListener("blur", ( ev ) => {
-      ev.currentTarget.readOnly = true;
+    this.inputNode.addEventListener("blur", ( ev:any ) => {
+      this.readOnly = true;
     });
   }
 
@@ -52,7 +59,7 @@ class ToDoListItem {
     this.parentNode.dispatchEvent( new CustomEvent( "todos.itemWasUpdated" ) );
   }
 
-  getData() {
+  getData(): Object {
     return {
       id: this.id,
       name: this.name,
@@ -75,7 +82,7 @@ class ToDoListItem {
     this.sendUpdateStatus();
   }
 
-  updateEvent( ev ) {
+  updateEvent( ev:any ) {
     if( ev.target.value.length == 0 ) {
       ev.preventDefault();
       ev.target.value = this.name;
@@ -87,4 +94,5 @@ class ToDoListItem {
   }
 }
 
-export { ToDoListItem as default }
+export default ToDoListItem
+
