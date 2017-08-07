@@ -184,7 +184,7 @@ let errorsPanel = document.querySelector(".js-errors-panel");
 let appMenu = document.querySelector(".js-app-menu");
 let aboutBox = document.querySelector(".js-description");
 if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/todoListBuilderPWA/sw.js")
+    navigator.serviceWorker.register("/js-assignments/todoListBuilderPWA/sw.js")
         .then((registration) => {
         errors_1.default("SW ToDoList registration was done!", registration);
         return navigator.serviceWorker.ready;

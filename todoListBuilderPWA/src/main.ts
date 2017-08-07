@@ -7,7 +7,7 @@ let appMenu: Element = document.querySelector( ".js-app-menu" );
 let aboutBox: Element = document.querySelector( ".js-description" );
 
 if( "serviceWorker" in navigator ) {
-  navigator.serviceWorker.register( "/todoListBuilderPWA/sw.js" ) // all domain is the scope todoListBuilderPWA
+  navigator.serviceWorker.register( "/js-assignments/todoListBuilderPWA/sw.js" ) // all domain is the scope todoListBuilderPWA
   .then( ( registration ) => {
     addError( "SW ToDoList registration was done!",  registration );
     return navigator.serviceWorker.ready;
