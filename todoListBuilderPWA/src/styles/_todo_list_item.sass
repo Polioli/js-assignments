@@ -1,0 +1,40 @@
+.item-wrap
+    display: flex
+    flex-wrap: nowrap
+    align-content: flex-start
+    align-items: center
+    .icon-button
+        flex: none
+    .checkbox
+        display: inline-flex
+        align-items: center
+        justify-content: center
+        flex: none
+    .in-progress
+        display: block
+    .done
+        display: none
+    &.error
+        .item-text-field
+            box-shadow: 0 2px 0 0px $white, 0 4px 0 0px $red
+
+.item-text-field
+    flex: 1
+    font-size: 16px
+    width: 100%
+    height: 24px
+    background: transparent
+    box-shadow: 0 2px 0 0px $white, 0 4px 0 0px rgba(0, 0, 0, 0.4)
+    &[readonly]
+        box-shadow: none
+
+.item-complete
+    .item-text-field
+        text-decoration: line-through
+
+.item-complete
+    .done
+        display: block
+    .in-progress
+        display: none
+

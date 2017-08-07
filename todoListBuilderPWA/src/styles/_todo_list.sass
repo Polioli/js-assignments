@@ -1,0 +1,70 @@
+.colored-icon-button
+    color: $blue
+
+.todos-box
+    display: flex
+    flex-wrap: wrap
+    align-content: flex-start
+
+.todo-grid-item
+    box-sizing: border-box
+    padding: $gap
+    min-width: 224px
+    max-width: 100%
+    // flex: 0 0 25%
+    flex-grow: 0
+    flex-shrink: 0
+    flex-basis: 20%
+    @media screen and ( max-width: $large )
+        flex-basis: 25%
+    @media screen and ( max-width: $midle )
+        flex-basis: 33.333333%
+    @media screen and ( max-width: $small )
+        flex-basis: 50%
+    @media screen and ( max-width: $smallest )
+        flex-basis: 100%
+
+.todo-wrap
+    position: relative
+    min-height: 3rem
+    padding: 0 0 12px 0
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12)
+
+.todo-name-wrap
+    display: flex
+    align-items: center
+    .icon-button
+        flex: none
+
+.todo-name
+    flex: 1
+    padding-left: 12px
+
+.todo-list
+    height: 6em
+    overflow-y: auto
+
+.add-item
+    padding-left: 12px
+
+.list-menu
+    position: absolute
+    z-index: 0
+    right: 48px
+    top: 16px
+    padding: 8px 16px
+    background-color: $white
+    @extend .mat-elevation-4dp
+    color: $black
+    visibility: hidden
+    .item
+        padding: 8px
+        opacity: .7
+        cursor: pointer
+        &:hover
+            opacity: 1
+    &.visible
+        z-index: 1
+        visibility: visible
+
+

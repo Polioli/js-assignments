@@ -1,2 +1,7 @@
 /*/node_modules/
-/*/dist/
+!/*/dist/
+/*/dist/*
+!/*/dist/*.bundle.js
+!/*/dist/*.map
+!/*/dist/*.css
+/*/dist/styles.bundle.*

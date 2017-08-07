@@ -4,13 +4,12 @@
   <meta charset="UTF-8">
   <title>Todo list builder</title>
   <meta name = "viewport" content = "initial-scale = 1.0">
-  <link rel="stylesheet" href="fonts.css">
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" sizes="32x32" href="/js-assignments/todoListBuilderPWA/img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/js-assignments/todoListBuilderPWA/img/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/js-assignments/todoListBuilderPWA/img/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/js-assignments/todoListBuilderPWA/img/apple-touch-icon.png">
-  <link rel="mask-icon" href="/js-assignments/todoListBuilderPWA/img/safari-pinned-tab.svg" color="#ffe200">
+  <link rel="stylesheet" href="dist/styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/todoListBuilderPWA/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/todoListBuilderPWA/img/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/todoListBuilderPWA/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/todoListBuilderPWA/img/apple-touch-icon.png">
+  <link rel="mask-icon" href="/todoListBuilderPWA/img/safari-pinned-tab.svg" color="#ffe200">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="AppleToDo">
@@ -19,16 +18,37 @@
   <link rel="manifest" href="/js-assignments/todoListBuilderPWA/manifest.json">
 </head>
 <body>
-  <h1>Todo Lists Builder</h1>
-  <div class="description">
-  <p><b>Задание:</b></p>
-  <p>ToDoBuilder с возможностью сохранения в storage</p>
-    <h2>Some notes how to use a todo-list</h2>
-    <p>Input text and press Enter or click ok-button</p>
-    <p>To update item click on it, modify text and press Enter to confirm changes or Esc to cancel it</p>
-</div>
-  <div class="js-todo-builder"></div>
-  <div class="js-errors-panel" style="font-family: Courier; color: red;"></div>
-  <script src="./bundle.js"></script>
+  <header class="app-bar">
+    <nav>
+      <button class="icon-button hamburger-button js-toggle-about">
+        <i class="material-icons material-spec-icon" title="Show navigation">menu</i>
+      </button>
+     </nav>
+    <div class="title">ToDo Lists</div>
+    <button class="icon-button menu-button js-app-menu-button">
+      <i class="material-icons material-spec-icon" title="Show menu">more_vert</i>
+    </button>
+  </header>
+  <div class="app-menu js-app-menu">
+    <ul>
+      <li class="item show js-app-menu-item" data-text-show="Show log" data-text-hide="Hide log" data-text-status="show">Show log</li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="description js-description">
+      <h1>About</h1>
+      <p><b>Задание:</b></p>
+      <p>ToDoBuilder с возможностью сохранения в storage</p>
+      <h2>Some notes how to use a todo-list</h2>
+      <p>Input text and press Enter or click ok-button</p>
+      <p>To update item click on it, modify text and press Enter to confirm changes or Esc to cancel it</p>
+      <div style="text-align: center; margin-top: 2em;">
+        <button class="flat-button js-description-close">Ok</button>
+      </div>
+    </div>
+    <section class="page page-active js-todo-builder"></section>
+  </div>
+  <footer class="js-errors-panel"></footer>
+  <script src="./dist/main.bundle.js"></script>
 </body>
 </html>
