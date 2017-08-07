@@ -81,16 +81,21 @@ class ToDoListItem {
     }
     initMarkup(item) {
         let itemNode = document.createElement("li");
-        itemNode.classList.add("todo-item");
+        itemNode.classList.add("item-wrap");
         let checkedStatus = "";
         if (item.isComplete) {
             itemNode.classList.add("item-complete");
             checkedStatus = "checked";
         }
         itemNode.innerHTML = `
-      <div role="checkbox" class="checkbox js-complete" ${checkedStatus}></div>
-      <input class="text js-update" value="${item.name}" readonly>
-      <div class="remove-btn js-remove"></div>`;
+      <div role="checkbox" class="icon-button colored-icon-button checkbox js-complete" ${checkedStatus}>
+        <i class="material-icons material-spec-icon done" title="Check it done">check_box</i>
+        <i class="material-icons material-spec-icon in-progress" title="Check it done">check_box_outline_blank</i>
+      </div>
+      <input class="item-text-field js-update" value="${item.name}" readonly>
+      <button class="icon-button colored-icon-button js-remove">
+        <i class="material-icons material-spec-icon" title="Remove item">clear</i>
+      </button>`;
         itemNode.dataset.id = item.id;
         this.parentNode.appendChild(itemNode);
         this.node = itemNode;
@@ -102,17 +107,29 @@ class ToDoListItem {
         this.inputNode.addEventListener("click", (ev) => {
             if (this.isComplete)
                 return;
-            this.readOnly = false;
+            ev.currentTarget.readOnly = false;
         });
         this.inputNode.addEventListener("change", this.updateEvent.bind(this));
         this.inputNode.addEventListener("keydown", (ev) => {
+            this.node.classList.remove("error");
             if (ev.keyCode == 27) {
                 ev.target.value = this.name;
                 this.inputNode.blur();
+                return;
+            }
+            if (ev.keyCode == 13) {
+                if (ev.target.value.length == 0) {
+                    ev.preventDefault();
+                    this.node.classList.add("error");
+                    return;
+                }
             }
         });
         this.inputNode.addEventListener("blur", (ev) => {
-            this.readOnly = true;
+            ev.currentTarget.readOnly = true;
+        });
+        this.inputNode.addEventListener("keypress", (ev) => {
+            this.node.classList.remove("error");
         });
     }
     sendUpdateStatus() {
@@ -142,8 +159,8 @@ class ToDoListItem {
     updateEvent(ev) {
         if (ev.target.value.length == 0) {
             ev.preventDefault();
-            ev.target.value = this.name;
-            alert("Необходимо заполнить название задачи");
+            this.node.classList.add("error");
+            return;
         }
         ev.target.readOnly = true;
         this.name = ev.target.value;
@@ -162,7 +179,10 @@ exports.default = ToDoListItem;
 Object.defineProperty(exports, "__esModule", { value: true });
 const todobuilder_1 = __webpack_require__(2);
 const errors_1 = __webpack_require__(4);
-var todoBuilder = new todobuilder_1.default(".js-todo-builder");
+let todoBuilder = new todobuilder_1.default(".js-todo-builder");
+let errorsPanel = document.querySelector(".js-errors-panel");
+let appMenu = document.querySelector(".js-app-menu");
+let aboutBox = document.querySelector(".js-description");
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/todoListBuilderPWA/sw.js")
         .then((registration) => {
@@ -178,6 +198,28 @@ if ("serviceWorker" in navigator) {
 else {
     errors_1.default("The browser doesn't support ServiceWorker", "");
 }
+document.querySelector(".js-app-menu-button").addEventListener("click", (ev) => {
+    appMenu.classList.toggle("visible");
+});
+document.querySelector(".js-app-menu-item").addEventListener("click", (ev) => {
+    errorsPanel.classList.toggle("visible");
+    appMenu.classList.toggle("visible");
+    let target = ev.currentTarget;
+    if (target.dataset.textStatus == "show") {
+        target.dataset.textStatus = "hide";
+        target.innerHTML = target.dataset.textHide;
+    }
+    else {
+        target.dataset.textStatus = "show";
+        target.innerHTML = target.dataset.textShow;
+    }
+});
+document.querySelector(".js-toggle-about").addEventListener("click", (ev) => {
+    aboutBox.classList.toggle("visible");
+});
+document.querySelector(".js-description-close").addEventListener("click", (ev) => {
+    aboutBox.classList.toggle("visible");
+});
 
 
 /***/ }),
@@ -200,7 +242,9 @@ class ToDoBuilder {
     }
     initializeDOM() {
         this.parentNode.innerHTML = '\
-      <div><button class="btn-add-todo js-add-todolist">Add a new todolist</button></div>\
+      <button class="fab js-add-todolist">\
+        <i class="material-icons material-spec-icon" title="Add Item">add</i>\
+      </button>\
       <div class="todos-box js-todo-box"></div>';
         this.addButtonNode = this.parentNode.querySelector(".js-add-todolist");
         this.todosBoxNode = this.parentNode.querySelector(".js-todo-box");
@@ -301,17 +345,35 @@ class ToDoList {
     }
     initMarkup() {
         let template = `
-      <div class="todo-name js-assign-name" contenteditable></div>
-      <button class="js-clear-list">Clear list</button>
-      <button class="js-remove-list">Remove list</button>
-      <form class="js-add-item"><input type="text" name="add-item" /><input type="submit" value="ok" /></form>
-      <ul class="todo-list js-list"></ul>`;
+      <div class="todo-wrap">
+        <div class="todo-name-wrap">
+          <div class="todo-name js-assign-name" contenteditable></div>
+          <button class="icon-button js-list-menu-button">
+            <i class="material-icons material-spec-icon" title="Show menu">more_vert</i>
+          </button>
+        </div>
+        <div class="list-menu js-list-menu">
+          <ul>
+            <li class="item js-clear-list">Clear list</li>
+            <li class="item js-remove-list">Remove list</li>
+          </ul>
+        </div>
+        <form class="item-wrap add-item js-add-item">
+          <input type="text" name="add-item" class="item-text-field" placeholder="Add name" />
+          <button type="submit" class="icon-button colored-icon-button">
+            <i class="material-icons material-spec-icon" title="Add item">add_circle</i>
+          </button>
+        </form>
+        <ul class="todo-list js-list"></ul>
+      </div>`;
         this.parentNode = document.createElement("div");
         this.parentNode.innerHTML = template;
-        this.parentNode.classList.add("todo-wrap");
+        this.parentNode.classList.add("todo-grid-item");
         this.inputNode = this.parentNode.querySelector(".js-add-item");
         this.listNode = this.parentNode.querySelector(".js-list");
         this.nameNode = this.parentNode.querySelector(".js-assign-name");
+        this.menuNode = this.parentNode.querySelector(".js-list-menu-button");
+        this.listMenuNode = this.parentNode.querySelector(".js-list-menu");
         this.todosBoxNode.append(this.parentNode);
     }
     initEvents() {
@@ -321,8 +383,10 @@ class ToDoList {
             });
         };
         this.parentNode.addEventListener("todos.createTask", (ev) => {
-            if (ev.detail.length == 0)
-                return alert("Необходимо заполнить название задачи");
+            if (ev.detail.length == 0) {
+                this.inputNode.classList.add("error");
+                return;
+            }
             this.addItem({ name: ev.detail });
         });
         this.parentNode.addEventListener("todos.removeTask", (ev) => {
@@ -333,6 +397,9 @@ class ToDoList {
         this.parentNode.addEventListener("todos.itemWasUpdated", (ev) => {
             this.saveList(null);
         }, true);
+        this.inputNode.addEventListener("keypress", (ev) => {
+            this.inputNode.classList.remove("error");
+        });
         this.inputNode.addEventListener("submit", (ev) => {
             ev.preventDefault();
             let elements = ev.target.elements;
@@ -342,6 +409,7 @@ class ToDoList {
         });
         this.parentNode.querySelector(".js-clear-list").addEventListener("click", (ev) => {
             this.clearAll(null);
+            this.listMenuNode.classList.toggle("visible");
         });
         this.nameNode.addEventListener("blur", (ev) => {
             if (ev.target.innerHTML != this.formatName()) {
@@ -360,9 +428,13 @@ class ToDoList {
                 ev.target.blur();
             }
         });
+        this.menuNode.addEventListener("click", (ev) => {
+            this.listMenuNode.classList.toggle("visible");
+        });
         this.parentNode.querySelector(".js-remove-list").addEventListener("click", (ev) => {
             this.clearAll({ removeWithParent: true });
             this.todosBoxNode.dispatchEvent(new CustomEvent("todos.removeListId", { detail: this.id }));
+            this.listMenuNode.classList.toggle("visible");
         });
     }
     formatName() {

@@ -3,3 +3,5 @@
 /*/dist/*
 !/*/dist/*.bundle.js
 !/*/dist/*.map
+!/*/dist/*.css
+/*/dist/styles.bundle.*

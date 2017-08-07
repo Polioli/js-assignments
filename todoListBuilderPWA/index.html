@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <title>Todo list builder</title>
   <meta name = "viewport" content = "initial-scale = 1.0">
-  <link rel="stylesheet" href="fonts.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dist/styles.css">
   <link rel="icon" type="image/png" sizes="32x32" href="/todoListBuilderPWA/img/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/todoListBuilderPWA/img/android-chrome-192x192.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/todoListBuilderPWA/img/favicon-16x16.png">
@@ -19,16 +18,37 @@
   <link rel="manifest" href="/todoListBuilderPWA/manifest.json">
 </head>
 <body>
-  <h1>Todo Lists Builder</h1>
-  <div class="description">
-  <p><b>Задание:</b></p>
-  <p>ToDoBuilder с возможностью сохранения в storage</p>
-    <h2>Some notes how to use a todo-list</h2>
-    <p>Input text and press Enter or click ok-button</p>
-    <p>To update item click on it, modify text and press Enter to confirm changes or Esc to cancel it</p>
-</div>
-  <div class="js-todo-builder"></div>
-  <div class="js-errors-panel" style="font-family: Courier; color: red;"></div>
+  <header class="app-bar">
+    <nav>
+      <button class="icon-button hamburger-button js-toggle-about">
+        <i class="material-icons material-spec-icon" title="Show navigation">menu</i>
+      </button>
+     </nav>
+    <div class="title">ToDo Lists</div>
+    <button class="icon-button menu-button js-app-menu-button">
+      <i class="material-icons material-spec-icon" title="Show menu">more_vert</i>
+    </button>
+  </header>
+  <div class="app-menu js-app-menu">
+    <ul>
+      <li class="item show js-app-menu-item" data-text-show="Show log" data-text-hide="Hide log" data-text-status="show">Show log</li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="description js-description">
+      <h1>About</h1>
+      <p><b>Задание:</b></p>
+      <p>ToDoBuilder с возможностью сохранения в storage</p>
+      <h2>Some notes how to use a todo-list</h2>
+      <p>Input text and press Enter or click ok-button</p>
+      <p>To update item click on it, modify text and press Enter to confirm changes or Esc to cancel it</p>
+      <div style="text-align: center; margin-top: 2em;">
+        <button class="flat-button js-description-close">Ok</button>
+      </div>
+    </div>
+    <section class="page page-active js-todo-builder"></section>
+  </div>
+  <footer class="js-errors-panel"></footer>
   <script src="./dist/main.bundle.js"></script>
 </body>
 </html>

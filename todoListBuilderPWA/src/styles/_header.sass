@@ -1,0 +1,53 @@
+.app-bar
+    position: fixed
+    z-index: 1
+    left: 0
+    right: 0
+    top: 0
+    height: $top-height
+    padding: 0 $side-padding / 2
+    background-color: $blue
+    color: white
+    @extend .mat-elevation-4dp
+    display: flex
+    flex-wrap: nowrap
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+    .title
+        flex: 1
+        margin-left: 20px
+
+%top-button
+    @extend .icon-button
+    flex: none
+    color: white
+
+.hamburger-button
+    @extend %top-button
+
+.menu-button
+    @extend %top-button
+    position: relative
+    top: 0
+    right: -12px
+
+.app-menu
+    position: fixed
+    z-index: 0
+    right: $side-padding
+    top: $top-height - 16px
+    background-color: $white
+    @extend .mat-elevation-4dp
+    color: $black
+    visibility: hidden
+    .item
+        padding: 16px
+        opacity: .7
+        cursor: pointer
+        &:hover
+            opacity: 1
+    &.visible
+        z-index: 1
+        visibility: visible
+

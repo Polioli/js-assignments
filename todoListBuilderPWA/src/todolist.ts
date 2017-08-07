@@ -14,6 +14,8 @@ class ToDoList {
   parentNode: HTMLElement;
   listNode: HTMLElement;
   inputNode: HTMLFormElement;
+  menuNode: HTMLButtonElement;
+  listMenuNode: HTMLElement;
   constructor( builderNode:any, data:any ) {
     this.todosBoxNode = builderNode;
     this.initMarkup();
@@ -48,20 +50,39 @@ class ToDoList {
   /*
     initMarkup задает структуру todo-компонента
     (form.js-add-item>input:text[name:"add-item"]+input:submit)+ul.todo-list.js-list
+
   */
   initMarkup() {
     let template = `
-      <div class="todo-name js-assign-name" contenteditable></div>
-      <button class="js-clear-list">Clear list</button>
-      <button class="js-remove-list">Remove list</button>
-      <form class="js-add-item"><input type="text" name="add-item" /><input type="submit" value="ok" /></form>
-      <ul class="todo-list js-list"></ul>`;
+      <div class="todo-wrap">
+        <div class="todo-name-wrap">
+          <div class="todo-name js-assign-name" contenteditable></div>
+          <button class="icon-button js-list-menu-button">
+            <i class="material-icons material-spec-icon" title="Show menu">more_vert</i>
+          </button>
+        </div>
+        <div class="list-menu js-list-menu">
+          <ul>
+            <li class="item js-clear-list">Clear list</li>
+            <li class="item js-remove-list">Remove list</li>
+          </ul>
+        </div>
+        <form class="item-wrap add-item js-add-item">
+          <input type="text" name="add-item" class="item-text-field" placeholder="Add name" />
+          <button type="submit" class="icon-button colored-icon-button">
+            <i class="material-icons material-spec-icon" title="Add item">add_circle</i>
+          </button>
+        </form>
+        <ul class="todo-list js-list"></ul>
+      </div>`;
     this.parentNode = <HTMLElement>document.createElement( "div" );
     this.parentNode.innerHTML = template;
-    this.parentNode.classList.add( "todo-wrap" );
+    this.parentNode.classList.add( "todo-grid-item" );
     this.inputNode = <HTMLFormElement>this.parentNode.querySelector( ".js-add-item" );
     this.listNode = <HTMLElement>this.parentNode.querySelector( ".js-list" );
     this.nameNode = this.parentNode.querySelector( ".js-assign-name" );
+    this.menuNode = <HTMLButtonElement>this.parentNode.querySelector( ".js-list-menu-button" );
+    this.listMenuNode = <HTMLElement>this.parentNode.querySelector( ".js-list-menu" );
     this.todosBoxNode.append( this.parentNode );
   }
 
@@ -77,7 +98,10 @@ class ToDoList {
       createTask, removeTask, updateTask, completeTask
     */
     this.parentNode.addEventListener("todos.createTask", ( ev:any ) => {
-      if( ev.detail.length == 0 ) return alert ( "Необходимо заполнить название задачи" );
+      if( ev.detail.length == 0 ) {
+        this.inputNode.classList.add( "error" );
+        return;
+      }
       this.addItem( { name: ev.detail } );
     });
 
@@ -94,7 +118,11 @@ class ToDoList {
     /*
        добавление нового элемента списка
     */
-    this.inputNode.addEventListener("submit", ( ev ) => {
+    this.inputNode.addEventListener("keypress", ( ev: any ) => {
+      this.inputNode.classList.remove( "error" );
+    });
+
+    this.inputNode.addEventListener("submit", ( ev: any ) => {
       ev.preventDefault();
       let elements: any = (<HTMLFormElement>ev.target).elements;
       let value = elements[ "add-item" ].value;
@@ -107,6 +135,7 @@ class ToDoList {
     */
     this.parentNode.querySelector( ".js-clear-list" ).addEventListener("click", ( ev:any ) => {
       this.clearAll( null );
+      this.listMenuNode.classList.toggle( "visible" );
     });
 
     /*
@@ -134,9 +163,14 @@ class ToDoList {
     /*
       удаление всего списка
     */
+    this.menuNode.addEventListener("click", ( ev:any ) => {
+      this.listMenuNode.classList.toggle( "visible" );
+    });
+
     this.parentNode.querySelector( ".js-remove-list" ).addEventListener("click", ( ev:any ) => {
       this.clearAll( { removeWithParent: true } );
       this.todosBoxNode.dispatchEvent( new CustomEvent( "todos.removeListId", { detail: this.id } ) );
+      this.listMenuNode.classList.toggle( "visible" );
     });
   }
 

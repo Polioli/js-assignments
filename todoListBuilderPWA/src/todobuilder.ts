@@ -17,7 +17,9 @@ class ToDoBuilder {
 
   initializeDOM() {
     this.parentNode.innerHTML = '\
-      <div><button class="btn-add-todo js-add-todolist">Add a new todolist</button></div>\
+      <button class="fab js-add-todolist">\
+        <i class="material-icons material-spec-icon" title="Add Item">add</i>\
+      </button>\
       <div class="todos-box js-todo-box"></div>';
     this.addButtonNode = this.parentNode.querySelector( ".js-add-todolist" );
     this.todosBoxNode = this.parentNode.querySelector( ".js-todo-box" );
