@@ -1,6 +1,36 @@
 /******/ (function(modules) { // webpackBootstrap
+/******/ 	// install a JSONP callback for chunk loading
+/******/ 	var parentJsonpFunction = window["webpackJsonp"];
+/******/ 	window["webpackJsonp"] = function webpackJsonpCallback(chunkIds, moreModules, executeModules) {
+/******/ 		// add "moreModules" to the modules object,
+/******/ 		// then flag all "chunkIds" as loaded and fire callback
+/******/ 		var moduleId, chunkId, i = 0, resolves = [], result;
+/******/ 		for(;i < chunkIds.length; i++) {
+/******/ 			chunkId = chunkIds[i];
+/******/ 			if(installedChunks[chunkId]) {
+/******/ 				resolves.push(installedChunks[chunkId][0]);
+/******/ 			}
+/******/ 			installedChunks[chunkId] = 0;
+/******/ 		}
+/******/ 		for(moduleId in moreModules) {
+/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/ 				modules[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 		}
+/******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules, executeModules);
+/******/ 		while(resolves.length) {
+/******/ 			resolves.shift()();
+/******/ 		}
+/******/
+/******/ 	};
+/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
+/******/
+/******/ 	// objects to store loaded and loading chunks
+/******/ 	var installedChunks = {
+/******/ 		1: 0
+/******/ 	};
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -26,6 +56,55 @@
 /******/ 		return module.exports;
 /******/ 	}
 /******/
+/******/ 	// This file contains only the entry chunk.
+/******/ 	// The chunk loading function for additional chunks
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
+/******/ 		var installedChunkData = installedChunks[chunkId];
+/******/ 		if(installedChunkData === 0) {
+/******/ 			return new Promise(function(resolve) { resolve(); });
+/******/ 		}
+/******/
+/******/ 		// a Promise means "currently loading".
+/******/ 		if(installedChunkData) {
+/******/ 			return installedChunkData[2];
+/******/ 		}
+/******/
+/******/ 		// setup Promise in chunk cache
+/******/ 		var promise = new Promise(function(resolve, reject) {
+/******/ 			installedChunkData = installedChunks[chunkId] = [resolve, reject];
+/******/ 		});
+/******/ 		installedChunkData[2] = promise;
+/******/
+/******/ 		// start chunk loading
+/******/ 		var head = document.getElementsByTagName('head')[0];
+/******/ 		var script = document.createElement('script');
+/******/ 		script.type = 'text/javascript';
+/******/ 		script.charset = 'utf-8';
+/******/ 		script.async = true;
+/******/ 		script.timeout = 120000;
+/******/
+/******/ 		if (__webpack_require__.nc) {
+/******/ 			script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 		}
+/******/ 		script.src = __webpack_require__.p + "todoItem.bundle.js";
+/******/ 		var timeout = setTimeout(onScriptComplete, 120000);
+/******/ 		script.onerror = script.onload = onScriptComplete;
+/******/ 		function onScriptComplete() {
+/******/ 			// avoid mem leaks in IE.
+/******/ 			script.onerror = script.onload = null;
+/******/ 			clearTimeout(timeout);
+/******/ 			var chunk = installedChunks[chunkId];
+/******/ 			if(chunk !== 0) {
+/******/ 				if(chunk) {
+/******/ 					chunk[1](new Error('Loading chunk ' + chunkId + ' failed.'));
+/******/ 				}
+/******/ 				installedChunks[chunkId] = undefined;
+/******/ 			}
+/******/ 		};
+/******/ 		head.appendChild(script);
+/******/
+/******/ 		return promise;
+/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -57,146 +136,43 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "./dist/";
+/******/
+/******/ 	// on error function for async loading
+/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-class ToDoListItem {
-    constructor(parentNode, item) {
-        this.isComplete = false;
-        Object.assign(this, item);
-        this.parentNode = parentNode;
-        this.node = null;
-        this.initMarkup(item);
-        this.initEvents();
-    }
-    initMarkup(item) {
-        let itemNode = document.createElement("li");
-        itemNode.classList.add("item-wrap");
-        let checkedStatus = "";
-        if (item.isComplete) {
-            itemNode.classList.add("item-complete");
-            checkedStatus = "checked";
-        }
-        itemNode.innerHTML = `
-      <div role="checkbox" class="icon-button colored-icon-button checkbox js-complete" ${checkedStatus}>
-        <i class="material-icons material-spec-icon done" title="Check it done">check_box</i>
-        <i class="material-icons material-spec-icon in-progress" title="Check it done">check_box_outline_blank</i>
-      </div>
-      <input class="item-text-field js-update" value="${item.name}" readonly>
-      <button class="icon-button colored-icon-button js-remove">
-        <i class="material-icons material-spec-icon" title="Remove item">clear</i>
-      </button>`;
-        itemNode.dataset.id = item.id;
-        this.parentNode.appendChild(itemNode);
-        this.node = itemNode;
-        this.inputNode = itemNode.querySelector(".js-update");
-    }
-    initEvents() {
-        this.node.querySelector(".js-complete").addEventListener("click", this.toggleCompleteEvent.bind(this));
-        this.node.querySelector(".js-remove").addEventListener("click", this.removeEvent.bind(this));
-        this.inputNode.addEventListener("click", (ev) => {
-            if (this.isComplete)
-                return;
-            ev.currentTarget.readOnly = false;
-        });
-        this.inputNode.addEventListener("change", this.updateEvent.bind(this));
-        this.inputNode.addEventListener("keydown", (ev) => {
-            this.node.classList.remove("error");
-            if (ev.keyCode == 27) {
-                ev.target.value = this.name;
-                this.inputNode.blur();
-                return;
-            }
-            if (ev.keyCode == 13) {
-                if (ev.target.value.length == 0) {
-                    ev.preventDefault();
-                    this.node.classList.add("error");
-                    return;
-                }
-            }
-        });
-        this.inputNode.addEventListener("blur", (ev) => {
-            ev.currentTarget.readOnly = true;
-        });
-        this.inputNode.addEventListener("keypress", (ev) => {
-            this.node.classList.remove("error");
-        });
-    }
-    sendUpdateStatus() {
-        this.parentNode.dispatchEvent(new CustomEvent("todos.itemWasUpdated"));
-    }
-    getData() {
-        return {
-            id: this.id,
-            name: this.name,
-            isComplete: this.isComplete
-        };
-    }
-    removeEvent() {
-        this.node.remove();
-        this.parentNode.dispatchEvent(new CustomEvent("todos.removeTask", { detail: this.id }));
-    }
-    toggleCompleteEvent() {
-        if (this.isComplete) {
-            this.node.classList.remove("item-complete");
-        }
-        else {
-            this.node.classList.add("item-complete");
-        }
-        this.isComplete = !this.isComplete;
-        this.sendUpdateStatus();
-    }
-    updateEvent(ev) {
-        if (ev.target.value.length == 0) {
-            ev.preventDefault();
-            this.node.classList.add("error");
-            return;
-        }
-        ev.target.readOnly = true;
-        this.name = ev.target.value;
-        this.sendUpdateStatus();
-    }
-}
-exports.default = ToDoListItem;
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__todobuilder__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__errors__ = __webpack_require__(3);
 
 
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const todobuilder_1 = __webpack_require__(2);
-const errors_1 = __webpack_require__(4);
-let todoBuilder = new todobuilder_1.default(".js-todo-builder");
+let todoBuilder = new __WEBPACK_IMPORTED_MODULE_0__todobuilder__["a" /* default */](".js-todo-builder");
 let errorsPanel = document.querySelector(".js-errors-panel");
 let appMenu = document.querySelector(".js-app-menu");
 let aboutBox = document.querySelector(".js-description");
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/js-assignments/todoListBuilderPWA/sw.js")
         .then((registration) => {
-        errors_1.default("SW ToDoList registration was done!", registration);
+        Object(__WEBPACK_IMPORTED_MODULE_1__errors__["a" /* default */])("SW ToDoList registration was done!", registration);
         return navigator.serviceWorker.ready;
     }).catch((err) => {
-        errors_1.default("SW register error: ", err);
+        Object(__WEBPACK_IMPORTED_MODULE_1__errors__["a" /* default */])("SW register error: ", err);
     });
     navigator.serviceWorker.addEventListener("message", (ev) => {
-        errors_1.default("From SW: ", ev.data);
+        Object(__WEBPACK_IMPORTED_MODULE_1__errors__["a" /* default */])("From SW: ", ev.data);
     });
 }
 else {
-    errors_1.default("The browser doesn't support ServiceWorker", "");
+    Object(__WEBPACK_IMPORTED_MODULE_1__errors__["a" /* default */])("The browser doesn't support ServiceWorker", "");
 }
 document.querySelector(".js-app-menu-button").addEventListener("click", (ev) => {
     appMenu.classList.toggle("visible");
@@ -223,13 +199,12 @@ document.querySelector(".js-description-close").addEventListener("click", (ev) =
 
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__todolist__ = __webpack_require__(2);
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const todolist_1 = __webpack_require__(3);
 class ToDoBuilder {
     constructor(selector) {
         this.parentNode = document.querySelector(selector);
@@ -283,7 +258,7 @@ class ToDoBuilder {
             localStorage.removeItem("todoLists");
     }
     createTodoList(data) {
-        new todolist_1.default(this.todosBoxNode, data);
+        new __WEBPACK_IMPORTED_MODULE_0__todolist__["a" /* default */](this.todosBoxNode, data);
     }
     addList() {
         this.createTodoList(null);
@@ -304,16 +279,14 @@ class ToDoBuilder {
         }
     }
 }
-exports.default = ToDoBuilder;
+/* harmony default export */ __webpack_exports__["a"] = (ToDoBuilder);
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
 class ToDoList {
     constructor(builderNode, data) {
         this.todosBoxNode = builderNode;
@@ -487,22 +460,22 @@ class ToDoList {
     addItem(item) {
         if (typeof item.id == "undefined")
             item.id = new Date().getTime();
-        Promise.resolve().then(function () { return __webpack_require__(0); }).then(module => module.default).then((ToDoListItem) => {
+        __webpack_require__.e/* import() */(0).then(__webpack_require__.bind(null, 5)).then((module) => module.default).then((ToDoListItem) => {
             this.items.push(new ToDoListItem(this.listNode, item));
             this.saveList(null);
+        }).catch((err) => {
+            console.log("Lazy loading error:", err);
         });
     }
 }
-exports.default = ToDoList;
+/* harmony default export */ __webpack_exports__["a"] = (ToDoList);
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
 let errorsPanel = document.querySelector(".js-errors-panel");
 let addError = (message, toConsole) => {
     let text = message + (toConsole || "");
@@ -510,7 +483,7 @@ let addError = (message, toConsole) => {
     errorsPanel.appendChild(document.createElement("br"));
     console.log(text);
 };
-exports.default = addError;
+/* harmony default export */ __webpack_exports__["a"] = (addError);
 
 
 /***/ })

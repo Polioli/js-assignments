@@ -10,6 +10,7 @@ let filesToCache = [
   "./",
   "./index.html",
   "./dist/main.bundle.js",
+  // "./dist/todoItem.bundle.js",
   "./dist/styles.css",
   "https://fonts.gstatic.com/s/materialicons/v27/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2",
   "https://fonts.gstatic.com/s/roboto/v16/0eC6fl06luXEYWpBSJvXCIX0hVgzZQUfRDuZrPvH3D8.woff2",

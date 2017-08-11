@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ES2015",
     "baseUrl": ".",
     "outDir": "./dist",
     "noImplicitAny": true,

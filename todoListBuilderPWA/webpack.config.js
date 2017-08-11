@@ -6,13 +6,15 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
   entry: {
     main: "./src/main.ts",
-    todoItem: "./src/todolist_item.ts",
+    // todoItem: "./src/todolist_item.ts",
     styles: "./src/styles/main.sass"
   },
   devtool: "source-map",
   // context: __dirname + '/app',
   output: {
     filename: "[name].bundle.js",
+    chunkFilename: "todoItem.bundle.js",
+    publicPath: "./dist/",
     path: path.resolve( __dirname, "dist" )
   },
   devServer: {

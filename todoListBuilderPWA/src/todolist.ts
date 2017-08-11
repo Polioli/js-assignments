@@ -1,4 +1,5 @@
-// import ToDoListItem from "./todolist_item"
+declare let System: any;
+// import ToDoListItem from "./todolist_item";
 
 class ToDoList {
   /*
@@ -229,9 +230,11 @@ class ToDoList {
     if( typeof item.id == "undefined" ) item.id = new Date().getTime();
     // this.items.push( new ToDoListItem( this.listNode, item ) );
 
-    import( "./todolist_item" ).then( module => module.default ).then( ( ToDoListItem ) => {
+    System.import( "./todolist_item" ).then( (module: any) => module.default ).then( ( ToDoListItem: any ) => {
       this.items.push( new ToDoListItem( this.listNode, item ) );
       this.saveList( null );
+    }).catch( ( err:any ) => {
+      console.log( "Lazy loading error:", err );
     });
 
     // import( "./todolist_item" ).then( module => {
